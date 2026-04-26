@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Note: OneAgent is NOT installed in the container
+      # For ECS, use Dynatrace's ECS integration or Operator
+    container_name: flask-app-dynatrace
+    ports:
+      - "8080:8080"
+    environment:
+      # Runtime environment variables
+      - ENVIRONMENT=local-with-dynatrace
+      - PORT=8080
+      - PYTHONUNBUFFERED=1
+      - DT_API_TOKEN=${DT_API_TOKEN}
+      - DT_ENVIRONMENT_ID=${DT_ENVIRONMENT_ID}
+      - DT_LOG_CONTENT_ACCESS=1
+      - DT_CONNECTION_POINT=${DT_CONNECTION_POINT:-https://${DT_ENVIRONMENT_ID}.live.dynatrace.com}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 60s

@@ -1,0 +1,17 @@
+# AWS Configuration
+aws_region         = "us-east-1"
+project_name       = "flask-ecs-app"
+environment        = "production"
+
+# VPC Configuration
+vpc_cidr           = "10.0.0.0/16"
+availability_zones = ["us-east-1a", "us-east-1b"]
+
+# ECS Task Configuration
+task_cpu      = "256"
+task_memory   = "512"
+desired_count = 2
+
+# Dynatrace Configuration (set these values)
+dynatrace_api_token       = "your-dynatrace-api-token"
+dynatrace_environment_id  = "your-environment-id"
